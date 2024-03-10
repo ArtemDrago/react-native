@@ -26,14 +26,26 @@ const ServicesScreen: React.FC<ServicesScreenProps> = ({ navigation, route }) =>
 
 
   useMemo(() => {
-    for (let i = 0; i < serviceList.length; i++) {
-      let service = serviceList[i];
-      if (service.id == serviceListId) {
-        setFitnessClasses(service.services);
-        setSortedService(service.services);
-        break;
-      } else continue;
+    if (serviceListId == 0) {
+      let allServices = [];
+      for (let i = 0; i < serviceList.length; i++) {
+        let service = serviceList[i];
+        allServices.push(...service.services);
+      }
+      setFitnessClasses(allServices);
+      setSortedService(allServices);
+      allServices = [];
+    } else {
+      for (let i = 0; i < serviceList.length; i++) {
+        let service = serviceList[i];
+        if (service.id == serviceListId) {
+          setFitnessClasses(service.services);
+          setSortedService(service.services);
+          break;
+        } else continue;
+      }
     }
+
   }, [serviceListId]);
 
   const setChangeServiceList = (text: string) => {

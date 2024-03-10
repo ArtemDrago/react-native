@@ -1,5 +1,11 @@
 export const ServiceCategories = [
     {
+        id: 0,
+        name: 'Все услуги',
+        image: 'https://my-fit.ru/userfls/clauses/large/785_polza-gruppovykh-zanyatiy-i-.jpg',
+        services: 0,
+    },
+    {
         id: 1,
         name: 'Групповые занятия',
         image: 'https://my-fit.ru/userfls/clauses/large/785_polza-gruppovykh-zanyatiy-i-.jpg',
@@ -58,14 +64,14 @@ const serviceListState = [
 
 const GymServices = [
     {
-        id: 1,
+        id: 6,
         name: 'Общая тренировка',
         description: 'Подходит для всех уровней подготовки.',
         duration: '60 мин',
         price: '500 руб.',
     },
     {
-        id: 2,
+        id: 7,
         name: 'Персональная тренировка',
         description:
             'Персональные занятия с нашими лучшими тренерами и индивидуальным подходом к каждому клиенту!',
