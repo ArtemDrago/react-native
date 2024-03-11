@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   View,
   Text,
@@ -48,12 +48,11 @@ const ServicesScreen: React.FC<ServicesScreenProps> = ({ navigation, route }) =>
 
   }, [serviceListId]);
 
-  const setChangeServiceList = (text: string) => {
-    setSearch(text);
+  useEffect(() => {
     setFitnessClasses(
-      sortedService.filter(service => service.name.toLowerCase().includes(text.toLocaleLowerCase()))
+      sortedService.filter(service => service.name.toLowerCase().includes(search.toLocaleLowerCase()))
     );
-  };
+  }, [search]);
 
   const clearSerchValue = () => {
     setFitnessClasses(sortedService);
@@ -70,7 +69,7 @@ const ServicesScreen: React.FC<ServicesScreenProps> = ({ navigation, route }) =>
               placeholder="Введите услугу"
               placeholderTextColor={'gray'}
               value={search}
-              onChangeText={text => setChangeServiceList(text)}
+              onChangeText={text => setSearch(text)}
             />
             <TouchableOpacity
               style={styles.btnClear}
