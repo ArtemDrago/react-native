@@ -7,11 +7,11 @@ import {
   StyleSheet,
   ScrollView,
   SafeAreaView,
-  View,
-  Keyboard
+  View
 } from 'react-native';
 import { FitnessClass } from '../models/models';
 import ValidationTextInput from '../UIUX/InputValidation';
+import { dateMask, phoneMask } from '../constant/constants';
 
 interface BookingScreenProps {
   route: any;
@@ -24,11 +24,10 @@ const BookingScreen: React.FC<BookingScreenProps> = ({ route }) => {
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
   const [comment, setComment] = useState('');
-  const phoneMask = ['(', /\d/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/];
-  const dateMask = [/\d/, /\d/, /\d/, /\d/, '.', /\d/, /\d/, '.', /\d/, /\d/];
   const nameInput = useRef<TextInput>(null);
   const phoneInput = useRef<TextInput>(null);
   const dateInput = useRef<TextInput>(null);
+  const [showError, setShowError] = useState(false);
 
   const handleBooking = () => {
     if (name && phoneNumber && date && time) {
@@ -37,23 +36,16 @@ const BookingScreen: React.FC<BookingScreenProps> = ({ route }) => {
       setPhoneNumber('');
       setTime('');
       setDate('');
+      setComment('');
     } else {
       Alert.alert('Ошибка', 'Пожалуйста, заполните все поля формы.');
-
-      if (!name) {
-        Keyboard.dismiss();
+      setShowError(true);
+      if (name.length <= 0) {
         nameInput.current?.focus();
-        nameInput.current?.blur();
-      }
-      if (!phoneNumber) {
-        Keyboard.dismiss();
+      } else if (phoneNumber.length <= 0) {
         phoneInput.current?.focus();
-        phoneInput.current?.blur();
-      }
-      if (!date) {
-        Keyboard.dismiss();
+      } else if (date.length <= 0) {
         dateInput.current?.focus();
-        dateInput.current?.blur();
       }
     }
   };
@@ -80,6 +72,7 @@ const BookingScreen: React.FC<BookingScreenProps> = ({ route }) => {
             setValue={setName}
             regex={/^[A-Za-z]{1,20}$/}
             validationMessage="Введите имя"
+            showError={showError}
           />
           <ValidationTextInput
             ref={phoneInput}
@@ -91,6 +84,7 @@ const BookingScreen: React.FC<BookingScreenProps> = ({ route }) => {
             validationMessage="Введите номер телефона"
             maxLength={18}
             mask={phoneMask}
+            showError={showError}
           />
           <ValidationTextInput
             ref={dateInput}
@@ -101,6 +95,7 @@ const BookingScreen: React.FC<BookingScreenProps> = ({ route }) => {
             regex={/^.{10,10}$/}
             validationMessage="Введите дату в формате yyyy.mm.dd"
             mask={dateMask}
+            showError={showError}
           />
           <ValidationTextInput
             placeholder="Время"

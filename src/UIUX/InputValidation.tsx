@@ -1,11 +1,12 @@
 import { StyleSheet, View, Text } from "react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import React from "react";
 import MaskInput from 'react-native-mask-input';
 
 export const ValidationTextInput = React.forwardRef((props: any, ref: any) => {
     const [text, setText] = useState<string>('');
     const [validationMessage, setValidationMessage] = useState<string>('');
+    let isShowError = props.showError || null;
 
     const handleTextChange = (input: string) => {
         setText(input);
@@ -24,11 +25,20 @@ export const ValidationTextInput = React.forwardRef((props: any, ref: any) => {
             isValid = props.regex.test(input);
             if (!isValid) {
                 setValidationMessage(props.validationMessage);
+                if (!!props?.addErrorRef) {
+                    props?.addErrorRef(ref);
+                }
             } else {
                 setValidationMessage('');
             }
         }
     };
+
+    useEffect(() => {
+        if (!!props?.showError && props?.showError === true) {
+            validate(text);
+        };
+    }, [isShowError]);
 
     return (
         <View style={styles.container}>
